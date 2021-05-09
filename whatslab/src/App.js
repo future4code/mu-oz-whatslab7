@@ -1,8 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-// import DigitarMensagem from './components/DigitarMensagem.js'
-import BotaoEnviarMensagem from './components/BotaoEnviarMensagem.js'
-import TesteDigitarMensagemClasse from './components/TesteDigitarMensagemComClasse'
+// import BotaoEnviarMensagem from './components/BotaoEnviarMensagem.js'
+import MensagensEnviadas from './components/MensagensEnviadas'
 
 const BodyMainContainer = styled.div`
   background-color: rgb(218,219,212);
@@ -40,33 +39,101 @@ display:flex;
 align-items: center;
 justify-content: space-evenly;
 `
+const InputMensagem = styled.input`
+width:40vw;
+height: 6vh;
+border-radius: 3vh;
+border: none;
+`
+const BotaoEnviar = styled.button`
+height:6vh;
+width: 4vw;
+border-radius: 2vh;
+border: none;
+`
+
+const ContainerExibirMensagens = styled.div`
+padding: 10px;
+background-color: cyan;
+display:flex;
+flex-direction:column;
+justify-content:flex-end;
+align-items: flex-end;
+`
+const InputUsuario = styled.input`
+width:10vw;
+height: 6vh;
+border-radius:3vh;
+border: none;
+`
 
 
 class App extends React.Component {
-  render() {
-    return (
+  state = {
+    mensagensEnviadas: [{
+      usuario: "",
+      mensagem: ""
+    }],
+    // arrayMensagens: [],
+    usuario: "",
+    mensagemDigitada: "",
+    // arrayUsuarios:[],
 
-      <div>
+  }
 
-        <BodyMainContainer>
-          <ConteinerWhats>
+ 
+  onChangeMensagemDigitada = (e) => {
+    this.setState({ mensagemDigitada: e.target.value })
+  }
+
+  onChangeUsuario = (e) => {
+    this.setState({ usuario: e.target.value })
+}
+
+
+  enviarMensagem = () => {
+    const novaMensagem = {
+      usuario: this.state.usuario,
+      mensagem: this.state.mensagemDigitada,
+    }
+    console.log(novaMensagem)
+    const arrayMensagens = [...this.state.mensagensEnviadas, novaMensagem]
+    this.setState({
+      mensagensEnviadas: arrayMensagens,
+      usuario:"",
+    mensagemDigitada:""
+  })
+  }
+
+
+
+render() {
+  return (
+
+    <div>
+
+      <BodyMainContainer>
+        <ConteinerWhats>
           <ConteinerCabecalhoContatos>
           </ConteinerCabecalhoContatos>
           <ConteinerCabecalhoMensagens></ConteinerCabecalhoMensagens>
-          <ConteinerContatos/>
+          <ConteinerContatos />
           <ConteinerDigitarMensagem>
-          <TesteDigitarMensagemClasse/>
-          <BotaoEnviarMensagem/>
+            <InputMensagem type={"text"} placeholder={"digitar mensagem"} onChange={this.onChangeMensagemDigitada} value={this.state.mensagemDigitada} />
+            <InputUsuario type={"text"} placeholder={"Usuário"} onChange={this.onChangeUsuario} value={this.state.usuario} />
+            <BotaoEnviar onClick={this.enviarMensagem}>Enviar</BotaoEnviar>
           </ConteinerDigitarMensagem>
-          
-          </ConteinerWhats>
+          <ContainerExibirMensagens>
+            <MensagensEnviadas mensagens={this.state.mensagensEnviadas} /*usuarios={this.state.arrayUsuarios}*/ />
+          </ContainerExibirMensagens>
+        </ConteinerWhats>
 
 
-        </BodyMainContainer>
+      </BodyMainContainer>
 
-      </div>
-    );
-  }
+    </div>
+  );
+}
 }
 
 
